@@ -46,7 +46,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable} ${lexendDeca.variable} ${manrope.variable} ${roboto.variable}`}>
-      <body className="font-sans">
+      <body className="font-sans bg-white ">
         <Header />
         {children}
         <Footer />

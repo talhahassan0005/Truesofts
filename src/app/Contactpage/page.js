@@ -14,22 +14,25 @@ const manrope = Manrope({
   variable: "--font-manrope",
 });
 
+// pages/contact.js
 export default function ContactPage() {
   return (
-    <div className="max-w-2xl mx-auto mt-20 border border-blue-500 px-6 py-6 rounded-3xl bg-white">
-      <ProposalForm
-        mainHeading="Connect with our experts"       // string now
-        highlightText="experts"                     // separate highlight
-        subHeading={
-          <span className={inter.className}>
-            Launch Your Next Successful Business - Reach Out to Us!
-          </span>
-        }
-        formTitle="Request a proposal"
-        showEffect={false} // Optional: true or false
-        align="left"       // Optional: 'left' or 'center'
-        mainHeadingClassName={`${manrope.className} font-bold text-[36px] leading-[56px]`}
-      />
+    <div className="min-h-screen bg-white">   {/* <-- full page white */}
+      <div className="max-w-2xl mx-auto mt-20 border border-blue-500 px-6 py-6 rounded-3xl bg-white">
+        <ProposalForm
+          mainHeading="Connect with our experts"
+          highlightText="experts"
+          subHeading={
+            <span className={inter.className}>
+              Launch Your Next Successful Business - Reach Out to Us!
+            </span>
+          }
+          formTitle="Request a proposal"
+          showEffect={false}
+          align="left"
+          mainHeadingClassName={`${manrope.className} font-bold text-[36px] leading-[56px]`}
+        />
+      </div>
     </div>
   );
 }

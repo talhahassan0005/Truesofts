@@ -38,7 +38,7 @@ export default function PortfolioPage() {
       : allProjects.filter((project) => project.category === selectedCategory);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-20 py-8 sm:py-12">
+    <div className="bg-white px-4 sm:px-6 lg:px-20 py-8 sm:py-12">
       
       {/* Heading */}
       <div className="text-center mb-10">

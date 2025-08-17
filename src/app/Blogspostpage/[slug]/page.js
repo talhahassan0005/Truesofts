@@ -62,11 +62,11 @@ export default function BlogPost({ params }) {
   }, [slug]);
 
   if (loading) {
-    return <div className="p-10 text-center">Loading...</div>;
+    return <div className="p-10 bg-white text-center">Loading...</div>;
   }
 
   if (!post) {
-    return <div className="p-10 text-center text-red-600">Blog not found</div>;
+    return <div className="p-10 bg-white text-center text-red-600">Blog not found</div>;
   }
 
   const dynamicStyles = {

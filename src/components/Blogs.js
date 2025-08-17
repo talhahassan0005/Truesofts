@@ -80,19 +80,17 @@ export default function ExploreServices({ id }) {
           >
             Explore our services
           </h2>
-          <p
-            className={`${inter.className} w-[735px] text-[#1F1F1F] ml-auto mr-auto`} 
+            <p
+              className={`${inter.className} text-[#1F1F1F] mx-auto px-4 sm:px-6 md:px-8 
+                          text-base sm:text-lg md:text-xl leading-[26px] max-w-[735px]`} 
               style={{
-                fontStyle: 'medium',
                 fontWeight: 500,
-                lineHeight: '26px',
-                fontSize: '18px'
               }}
+            >
+              Digital Transformation Company dedicated to turning your ideas into reality. 
+              We help businesses grow by using the newest technology and best strategies.
+            </p>
 
-          >
-            Digital Transformation Company dedicated to turning your ideas into reality. We help
-            businesses grow by using the newest technology and best strategies.
-          </p>
         </div>
 
         {/* Buttons to scroll - hidden on mobile */}
@@ -133,23 +131,23 @@ export default function ExploreServices({ id }) {
             >
 
               {/* Image - visible only on md+ screens */}
-              {/* Image - visible only on md+ screens */}
-<div className="w-full md:w-1/2 hidden md:block">
-  <div className="h-[320px] w-full rounded-[12px] overflow-hidden bg-gray-100 flex items-center justify-center">
-    {service.image ? (
-      <Image
-        src={service.image}
-        alt={service.title}
-        width={640}
-        height={320}
-        className="w-full h-full object-cover"
-        priority={index === 0}
-      />
-    ) : (
-      <div className="text-gray-400 text-sm">Image Placeholder</div>
-    )}
-  </div>
-</div>
+             
+              <div className="w-full md:w-1/2 hidden md:block">
+                <div className="h-[320px] w-full rounded-[12px] overflow-hidden bg-gray-100 flex items-center justify-center">
+                  {service.image ? (
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      width={640}
+                      height={320}
+                      className="w-full h-full object-cover"
+                      priority={index === 0}
+                    />
+                  ) : (
+                    <div className="text-gray-400 text-sm">Image Placeholder</div>
+                  )}
+                </div>
+              </div>
 
 
               {/* Text */}
