@@ -28,9 +28,7 @@ export default function BlogPost({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // ✅ relative URL use karo (localhost issue fix)
         const res = await fetch(`/api/blogs/${slug}`, { cache: 'no-store' });
-
         if (!res.ok) {
           setLoading(false);
           setPost(null);
@@ -43,7 +41,6 @@ export default function BlogPost({ params }) {
         const html = marked(data.content || '');
         setContentHtml(html);
 
-        // Parse headings in browser
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const found = Array.from(doc.querySelectorAll('h2, h3'));
@@ -119,6 +116,7 @@ export default function BlogPost({ params }) {
                   width={40}
                   height={40}
                   className="rounded-lg object-cover"
+                  loading="lazy" // ✅ Lazy load small icons
                 />
               </a>
             ))}
@@ -147,6 +145,7 @@ export default function BlogPost({ params }) {
               <p className="text-black w-[400px] line-clamp-5" style={dynamicStyles}>{post.description}</p>
             </div>
 
+            {/* ✅ Main Blog Image loads first */}
             <div className="flex-shrink-0 w-full lg:w-[70%] bg-white mb-10 flex items-center justify-center">
               <div className="relative w-[750px] h-[300px]">
                 <Image
@@ -154,7 +153,7 @@ export default function BlogPost({ params }) {
                   alt={post.title}
                   fill
                   className="object-cover rounded-md"
-                  priority
+                  priority // Keep priority ONLY for main image
                 />
               </div>
             </div>
@@ -214,7 +213,7 @@ export default function BlogPost({ params }) {
                   width={900}
                   height={650}
                   className="object-cover"
-                  priority
+                  loading="lazy" // ✅ Lazy load explore section images
                 />
                 <span className="text-blue-600 font-semibold text-sm mb-2 uppercase line-clamp-1">{item.category}</span>
                 <h3 className="text-xl font-bold mb-2 cursor-pointer hover:text-blue-600 transition line-clamp-2">{item.title}</h3>
