@@ -1,6 +1,5 @@
 'use client';
 
-import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import Image from 'next/image';
 import { Lexend_Deca, Manrope, Inter } from 'next/font/google';
@@ -24,38 +23,53 @@ export default function BlogPost({ params }) {
   const [post, setPost] = useState(null);
   const [contentHtml, setContentHtml] = useState('');
   const [headings, setHeadings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/api/blogs/${slug}`, { cache: 'no-store' });
+      try {
+        // ✅ relative URL use karo (localhost issue fix)
+        const res = await fetch(`/api/blogs/${slug}`, { cache: 'no-store' });
 
-      if (!res.ok) {
-        return notFound();
+        if (!res.ok) {
+          setLoading(false);
+          setPost(null);
+          return;
+        }
+
+        const data = await res.json();
+        setPost(data);
+
+        const html = marked(data.content || '');
+        setContentHtml(html);
+
+        // Parse headings in browser
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const found = Array.from(doc.querySelectorAll('h2, h3'));
+        setHeadings(found.map(h => ({
+          text: h.textContent,
+          id: h.id || h.textContent.toLowerCase().replace(/\s+/g, '-'),
+          tag: h.tagName.toLowerCase()
+        })));
+
+      } catch (error) {
+        console.error("Error fetching blog:", error);
+        setPost(null);
+      } finally {
+        setLoading(false);
       }
-
-      const data = await res.json();
-      setPost(data);
-
-      const html = marked(data.content || '');
-      setContentHtml(html);
-
-      // Parse headings in browser
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const found = Array.from(doc.querySelectorAll('h2, h3'));
-      setHeadings(found.map(h => ({
-        text: h.textContent,
-        id: h.id || h.textContent.toLowerCase().replace(/\s+/g, '-'),
-        tag: h.tagName.toLowerCase()
-      })));
     };
 
     fetchData();
   }, [slug]);
 
-  if (!post) {
+  if (loading) {
     return <div className="p-10 text-center">Loading...</div>;
+  }
+
+  if (!post) {
+    return <div className="p-10 text-center text-red-600">Blog not found</div>;
   }
 
   const dynamicStyles = {
@@ -128,7 +142,6 @@ export default function BlogPost({ params }) {
             <div className="flex-1 lg:-ml-[280px]"> 
               <div className="flex items-center space-x-2 mb-3">
                 <span className="bg-purple-100 text-purple-600 px-2 py-1 rounded text-sm" style={dynamicStyles}>{post.category}</span>
-                
               </div>
               <h1 className="text-4xl w-[400px] font-bold mb-2 line-clamp-3" style={dynamicStyles}>{post.title}</h1>
               <p className="text-black w-[400px] line-clamp-5" style={dynamicStyles}>{post.description}</p>
@@ -145,7 +158,6 @@ export default function BlogPost({ params }) {
                 />
               </div>
             </div>
-
           </div>
 
           <article
