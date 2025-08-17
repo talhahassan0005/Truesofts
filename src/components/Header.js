@@ -11,8 +11,23 @@ export default function Header() {
   const [showProposalPopup, setShowProposalPopup] = useState(false);
   const [pendingScrollId, setPendingScrollId] = useState(null);
   const [expandedMenu, setExpandedMenu] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  // Check for mobile viewport
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
 
   // Prevent background scrolling when popup is open
   useEffect(() => {
@@ -105,12 +120,11 @@ export default function Header() {
           label: "Trusted Companies",
           action: () => handleScrollToSection("trusted-companies")
         },
-                
         {
           label: "Tech and Testimonial",
           action: () => handleScrollToSection("tech-stack")
         },
-                {
+        {
           label: "Industry Field works",
           action: () => handleScrollToSection("industries")
         },
@@ -154,7 +168,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="w-full bg-white relative z-50">
+    <header className="w-full bg-white sticky top-0 z-50">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center px-4 sm:px-8 py-3">
         {/* Logo */}
         <Link href="/" onClick={() => setIsMenuOpen(false)}>
@@ -163,22 +177,21 @@ export default function Header() {
             alt="TrueSofts Logo"
             width={140}
             height={150}
-            className="ml-4 sm:ml-16 rounded-sm object-contain cursor-pointer"
+            className="ml-0 sm:ml-4 md:ml-16 rounded-sm object-contain cursor-pointer"
             priority
           />
         </Link>
 
         {/* Buttons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={handleProposalClick}
-            className="text-white px-4 py-2 rounded-full font-semibold transition hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            className="text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full font-semibold transition hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 whitespace-nowrap text-sm sm:text-base"
             style={{
               backgroundColor: "#095BE8",
               fontFamily: "Inter, sans-serif",
-              fontWeight: 500, // 500 weight
+              fontWeight: 500,
               lineHeight: "24px",
-              fontSize: "16px",
               letterSpacing: "-0.02em",
             }}
           >
@@ -191,7 +204,7 @@ export default function Header() {
               setIsMenuOpen(!isMenuOpen);
               setExpandedMenu(null);
             }}
-            className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 mr-16"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 mr-0 sm:mr-4 md:mr-16"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             <div className="relative w-4 h-4 flex items-center justify-center">
@@ -210,88 +223,84 @@ export default function Header() {
         </div>
       </div>
 
-     {/* Submenu */}
-        {isMenuOpen && (
-          <nav className="font-bold absolute top-full pl-12 left-0 w-full bg-white shadow-lg py-6 z-40 animate-fadeIn max-h-screen overflow-y-auto">
-            <div className="max-w-screen-xl mx-auto px-4 sm:px-8">
-              <div className="flex">
-                {/* Main menu column */}
-                <div className="w-1/3 pr-8 space-y-4">
-                  {menuItems.map((item, index) => (
-                    <div key={index} className="group pl-4"> {/* <-- slight right indent */}
-                      {item.isParent ? (
-                        <button
-                          onClick={() => toggleMenuExpansion(index)}
-                          className="flex justify-between items-center w-full text-left text-gray-800 text-base hover:text-blue-600 py-2 transition-colors duration-200 focus:outline-none font-manrope"
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <nav className="font-bold absolute top-full left-0 w-full bg-white shadow-lg py-4 z-40 animate-fadeIn max-h-[calc(100vh-80px)] overflow-y-auto">
+          <div className="px-4 sm:px-8">
+            <div className={`flex ${isMobile ? 'flex-col' : ''}`}>
+              {/* Main menu column */}
+              <div className={`${isMobile ? 'w-full' : 'w-1/3 pr-8'} space-y-2 sm:space-y-4`}>
+                {menuItems.map((item, index) => (
+                  <div key={index} className="group pl-2 sm:pl-4">
+                    {item.isParent ? (
+                      <button
+                        onClick={() => toggleMenuExpansion(index)}
+                        className="flex justify-between items-center w-full text-left text-gray-800 text-sm sm:text-base hover:text-blue-600 py-1 sm:py-2 transition-colors duration-200 focus:outline-none font-manrope"
+                      >
+                        {item.label}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`transition-transform duration-200 ${expandedMenu === index ? 'rotate-90' : ''}`}
                         >
-                          {item.label}
-
-                          {/* Arrow only when active */}
-                          {expandedMenu === index && (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="transition-transform duration-200 rotate-90"
-                            >
-                              <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                          )}
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            item.action();
-                            setIsMenuOpen(false);
-                          }}
-                          className="text-gray-800 text-base hover:text-blue-600 w-full text-left py-2 block transition-colors duration-200 focus:outline-none"
-                        >
-                          {item.label}
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Submenu column (only shown when Services is expanded) */}
-                {expandedMenu !== null && (
-                  <div className="w-[300px] pl-8">
-                    <div className="space-y-2">
-                      {menuItems[expandedMenu].children.map((child, childIndex) => (
-                        <button
-                          key={childIndex}
-                          onClick={() => {
-                            child.action();
-                            setIsMenuOpen(false);
-                          }}
-                          className="text-gray-600 hover:text-blue-500 w-full text-left py-1 block transition-colors duration-200 text-base font-[Inter] font-normal" // normal weight
-                        >
-                          {child.label}
-                        </button>
-                      ))}
-                    </div>
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          item.action();
+                          setIsMenuOpen(false);
+                        }}
+                        className="text-gray-800 text-sm sm:text-base hover:text-blue-600 w-full text-left py-1 sm:py-2 block transition-colors duration-200 focus:outline-none"
+                      >
+                        {item.label}
+                      </button>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
+
+              {/* Submenu column (only shown when a parent menu is expanded) */}
+              {expandedMenu !== null && (
+                <div className={`${isMobile ? 'w-full pl-4 mt-2' : 'w-[300px] pl-8'} border-l border-gray-100`}>
+                  <div className="space-y-1 sm:space-y-2">
+                    {menuItems[expandedMenu].children.map((child, childIndex) => (
+                      <button
+                        key={childIndex}
+                        onClick={() => {
+                          child.action();
+                          setIsMenuOpen(false);
+                        }}
+                        className="text-gray-600 hover:text-blue-500 w-full text-left py-1 block transition-colors duration-200 text-sm sm:text-base font-[Inter] font-normal"
+                      >
+                        {child.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          </nav>
-        )}
+          </div>
+        </nav>
+      )}
 
       {/* Proposal Popup */}
       {showProposalPopup && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-transparent transition-opacity duration-300 animate-fadeIn"
+            className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 animate-fadeIn"
             onClick={() => setShowProposalPopup(false)}
           />
           <div 
-            className="relative w-[600px] max-w-2xl mx-auto max-h-[90vh] overflow-y-auto scrollbar-hide animate-scaleIn"
+            className="relative w-full sm:w-[90%] md:w-[600px] max-w-2xl mx-auto max-h-[90vh] overflow-y-auto scrollbar-hide animate-scaleIn"
             style={{ 
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
@@ -318,7 +327,7 @@ export default function Header() {
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
               </button>
-              <div className="p-6 md:p-8">
+              <div className="p-4 sm:p-6 md:p-8">
                 <RequestProposal 
                   border borderColor="red-500" 
                   borderSize="4"
