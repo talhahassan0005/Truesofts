@@ -23,7 +23,7 @@ const Footer = () => {
             <p className="mt-4 text-black font-medium">Follow Us:</p>
             <div className="flex gap-4 mt-2">
               <a href="#" target="_blank" rel="noopener noreferrer">
-                <Image src="/linkedIn.svg" alt="LinkedIn" width={24} height={24} />
+                <Image src="/LinkedIn.svg" alt="LinkedIn" width={24} height={24} />
               </a>
               <a href="#" target="_blank" rel="noopener noreferrer">
                 <Image src="/Instagram.svg" alt="Instagram" width={24} height={24} />
