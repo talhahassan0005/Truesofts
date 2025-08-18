@@ -27,7 +27,7 @@ const inter = Inter({
 
 const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400", "500", '600',"700"],
+  weight: ["400", "500", "700"],
   variable: "--font-manrope",
 });
 const roboto = Roboto({
