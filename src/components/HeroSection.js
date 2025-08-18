@@ -90,7 +90,7 @@ export default function HeroSection() {
         {/* Right Image */}
         <div className="relative order-2 lg:order-2 mt-2">
           <Image
-            src="/Herosection.png"
+            src="/HeroSection.svg"
             alt="Herosection"
             width={600}
             height={500}
