@@ -206,13 +206,13 @@ const TechTestimonialsIndustry = ({ id }) => {
               What Our Client Says<br /> About Us
             </h2>
             <p
-              className={`${inter.className} w-[635px] text-[#1F1F1F]`} 
-                  style={{
-                    fontStyle: 'medium',
-                    fontWeight: 500,
-                    lineHeight: '26px',
-                    fontSize: '18px'
-                  }}
+            className={`${inter.className} w-[635px] text-[#1F1F1F]`} 
+            style={{
+              fontStyle: 'medium',
+              fontWeight: 500,
+              lineHeight: '26px',
+              fontSize: '18px'
+            }}
             >
               Digital Transformation Company dedicated to turning your ideas into reality. We help businesses grow by using the newest technology and best strategies.
             </p>
